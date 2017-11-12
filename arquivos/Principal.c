@@ -6,9 +6,7 @@
 
 int main(){
 	char * caminhoImagem = "../imagens/Normal.ppm";
-
-	Olho * teste;
-	teste = leituraImagem(caminhoImagem);
+	Olho * teste = leituraImagem(caminhoImagem);
 
 	return 0;
 }

@@ -5,7 +5,7 @@
 Olho * leituraImagem(char * file){
 	FILE * imagem;
 
-	imagem = fopen(file, "r");
+	imagem = fopen(file, "rw");
 
 
 	if (imagem == NULL){
@@ -13,16 +13,14 @@ Olho * leituraImagem(char * file){
 
 	}
 	else{
-		Olho * dadosOlho;
-		
-		fscanf(imagem, "%s", dadosOlho->tipo);
-		printf("%s\n",teste);		
-		return dadosOlho;
+		char formato[3];
+		Olho * dadosOlho = malloc(sizeof(Olho));
+		fscanf(imagem, "%s", formato);
+		dadosOlho->tipo = formato;
+		printf("%s\n",dadosOlho->tipo);	
+		return dadosOlho;	
 	
 	}
-
-
-
 
 }
 
