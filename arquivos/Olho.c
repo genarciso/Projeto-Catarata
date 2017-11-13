@@ -16,7 +16,7 @@ Olho * leituraImagem(char * file){
 		int altura = 0, comprimento = 0;
 		int numeroMaximo;
 
-		Olho * dadosOlho = malloc(sizeof(Olho));  Olho.
+		Olho * dadosOlho = malloc(sizeof(Olho));
 		 
 		fscanf(imagem, "%s\n", formato); 						
 		fscanf(imagem, "%i %i\n",&comprimento,&altura);
@@ -74,8 +74,8 @@ Olho * escalaCinza(Olho * imagemOlho){
 			novaImagem->imagem[i][j].b = novaImagem->imagem[i][j].r;
 		}
 	}
-	printf("%s\n", novaImagem->tipo);
-	printf("%d %d\n", novaImagem->largura, novaImagem->altura);
+	// printf("%s\n", novaImagem->tipo);
+	// printf("%d %d\n", novaImagem->largura, novaImagem->altura);
 	return novaImagem;
 }
 
@@ -94,8 +94,8 @@ void salvarImagem(Olho * imagemOlho, char * nome){
 		printf("Falha ao abrir o arquivo!\n");
 	}
 	else{
-		printf("%s\n", imagemOlho->tipo);
-		printf("%d %d\n", imagemOlho->largura, imagemOlho->altura);
+		// printf("%s\n", imagemOlho->tipo);
+		// printf("%d %d\n", imagemOlho->largura, imagemOlho->altura);
 		fprintf(imagem, "%s\n", imagemOlho->tipo);
 		fprintf(imagem, "%d %d\n",imagemOlho->largura,imagemOlho->altura);
 		fprintf(imagem, "%d\n", imagemOlho->numeroMaximo);
