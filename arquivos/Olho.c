@@ -3,12 +3,11 @@
 #include <string.h>
 #include "../bibliotecas/Structs.h"
 
-
+// Esse método é responsável por fazer a leitura da imagem; retornando um ponteiro do tipo Olho que será, em si, a imagem.
 Olho * leituraImagem(char * file){
 	FILE * imagem;
-
 	imagem = fopen(file, "r");
-
+	
 	if (imagem == NULL){
 		printf("Falha ao abrir o arquivo!\n");
 	}
@@ -17,12 +16,12 @@ Olho * leituraImagem(char * file){
 		int altura = 0, comprimento = 0;
 		int numeroMaximo;
 
-		Olho * dadosOlho = malloc(sizeof(Olho));
-		fscanf(imagem, "%s\n", formato);
-		strcpy(dadosOlho->tipo, formato);
-		
+		Olho * dadosOlho = malloc(sizeof(Olho));  Olho.
+		 
+		fscanf(imagem, "%s\n", formato); 						
 		fscanf(imagem, "%i %i\n",&comprimento,&altura);
 		
+		strcpy(dadosOlho->tipo, formato);
 		dadosOlho->altura = altura;
 		dadosOlho->largura = comprimento;
 		
@@ -40,15 +39,13 @@ Olho * leituraImagem(char * file){
 				fscanf(imagem,"%i\n",&dadosOlho->imagem[i][j].g);
 				fscanf(imagem,"%i\n",&dadosOlho->imagem[i][j].b);
 			}
-		}
-		printf("%s\n", dadosOlho->tipo);
-		printf("%d %d\n", dadosOlho->largura, dadosOlho->altura);
-			
+		}	
 		fclose(imagem);
 		return dadosOlho;	
 	}
 }
 
+// Esse método recebe um dado do tipo ponteiro para Olho e retorna um outro ponteiro de Olho com o a transformação da imagem do olho recebida no parâmetro para a escala de cinza.
 Olho * escalaCinza(Olho * imagemOlho){
 	int vermelho = 0;
 	int azul = 0;
@@ -82,6 +79,7 @@ Olho * escalaCinza(Olho * imagemOlho){
 	return novaImagem;
 }
 
+// Esse método recebe um dado do tipo olho e um char que represente um nome e salva essa imagem de olho em um arquivo ppm nomeado pelo nome dado.
 void salvarImagem(Olho * imagemOlho, char * nome){
 	int i, j;
 	FILE * imagem;
