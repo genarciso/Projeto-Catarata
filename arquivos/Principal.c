@@ -6,8 +6,12 @@
 
 int main(){
 	char * caminhoImagem = "../imagens/Normal.ppm";
-	Olho * teste = leituraImagem(caminhoImagem);
-
+	Olho * imagem = leituraImagem(caminhoImagem);
+	
+	Olho * escaladoCinza = escalaCinza(imagem);
+	
+	salvarImagem(escaladoCinza,"escalaCinza.ppm");
+	
 	return 0;
 }
 
