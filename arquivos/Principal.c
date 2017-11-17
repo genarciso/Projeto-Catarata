@@ -6,11 +6,19 @@
 
 int main(){
 	char * caminhoImagem = "../imagens/Normal.ppm";
-	Olho * imagem = leituraImagem(caminhoImagem);	
+
+	Olho * imagem = leituraImagem(caminhoImagem);
+
 	Olho * escaladoCinza = escalaCinza(imagem);
+
+	Olho * filtroGauss = filtroGaussiano(escaladoCinza);
+
 	salvarImagem(escaladoCinza,"escalaCinza.ppm");
+	salvarImagem(filtroGauss,"filtroGauss.ppm");
+
 	free(imagem);
 	free(escaladoCinza);
+	free(filtroGauss);
 	return 0;
 }
 
