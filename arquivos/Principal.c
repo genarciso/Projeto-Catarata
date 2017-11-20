@@ -19,6 +19,7 @@ int main(){
 	free(imagem);
 	free(escaladoCinza);
 	free(filtroGauss);
+
 	return 0;
 }
 
