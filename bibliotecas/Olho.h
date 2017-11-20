@@ -8,4 +8,5 @@ void salvarImagem(Olho * imagemOlho, char * nome);
 Olho * criarImagem(Olho * imagemOlho);
 Pixel * leituraPixel( Olho * imagem, int coluna, int linha );
 Olho * filtroGaussiano(Olho * imagem);
+Olho * filtroSobel(Olho * imagemOlho);
 #endif

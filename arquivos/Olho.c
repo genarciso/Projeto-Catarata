@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "../bibliotecas/Structs.h"
 
 void leituraComentarios(FILE * imagem){
@@ -163,6 +164,56 @@ Olho * filtroGaussiano(Olho * imagemOlho){
     	}
     }
     return novaImagem;
+}
+
+Olho * filtroSobel(Olho * imagemOlho){
+	// int mascaraVertical[3][3] = {{ 1, 0, (-1)},
+	// 							{ 2, 0, (-2) },
+	// 							{ 1, 0, (-1) }};
+
+	// int mascaraVertical[3][3] = {{ 1, 2, 1 },
+	// 							{ 0, 0, 0 },
+	// 							{ -1, -2, -1 }};
+
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem = criarImagem(imagemOlho);
+
+	int novoPixel;
+	Pixel ** pixelsVerticais;
+	Pixel ** pixelsHorizontais;
+
+	pixelsVerticais = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
+	pixelsHorizontais = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
+	for(int i = 0; i< imagemOlho->largura; i++){
+		pixelsVerticais[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
+		pixelsHorizontais[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
+	}
+
+	for (int i = 1; i < imagemOlho->altura-1; ++i){
+		for (int j = 1; j < imagemOlho->largura-1; ++j){
+			pixelsVerticais[i][j].r = (1)*imagemOlho->imagem[i-1][j-1].r + (2)*imagemOlho->imagem[i-1][j].r + (1)*imagemOlho->imagem[i-1][j+1].r +
+									(0)*imagemOlho->imagem[i][j-1].r + (0)*imagemOlho->imagem[i][j].r + (0)*imagemOlho->imagem[i][j+1].r +
+									(-1)*imagemOlho->imagem[i+1][j-1].r + (-2)*imagemOlho->imagem[i+1][j].r + (-1)*imagemOlho->imagem[i+1][j+1].r;
+
+			pixelsHorizontais[i][j].r = (-1)*imagemOlho->imagem[i-1][j-1].r + 0*imagemOlho->imagem[i-1][j].r + (1)*imagemOlho->imagem[i-1][j+1].r +
+									(-2)*imagemOlho->imagem[i][j-1].r + 0*imagemOlho->imagem[i][j].r + (2)*imagemOlho->imagem[i][j+1].r +
+									(-1)*imagemOlho->imagem[i+1][j-1].r + (0)*imagemOlho->imagem[i+1][j].r + (1)*imagemOlho->imagem[i+1][j+1].r;
+			
+		}
+	}
+
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+		novoPixel = pixelsVerticais[i][j].r;
+		novaImagem->imagem[i][j].r = novoPixel;
+		novaImagem->imagem[i][j].g = novoPixel;
+		novaImagem->imagem[i][j].b = novoPixel;
+		}
+	}
+
+	return novaImagem;
+
 }
 
 // Esse método recebe um dado do tipo olho e um char que represente um nome e salva essa imagem de olho em um arquivo ppm nomeado pelo nome dado.
