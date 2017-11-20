@@ -167,52 +167,47 @@ Olho * filtroGaussiano(Olho * imagemOlho){
 }
 
 Olho * filtroSobel(Olho * imagemOlho){
-	// int mascaraVertical[3][3] = {{ 1, 0, (-1)},
-	// 							{ 2, 0, (-2) },
-	// 							{ 1, 0, (-1) }};
+	 int mascaraHorizontal[3][3] = {{ (-1), 0, (1) },
+									{ (-2), 0, (2) },
+									{ (-1), 0, (1) }};
 
-	// int mascaraVertical[3][3] = {{ 1, 2, 1 },
-	// 							{ 0, 0, 0 },
-	// 							{ -1, -2, -1 }};
+	 int mascaraVertical[3][3] = {{ (-1), (-2), (-1) },
+	 							  { 0, 0, 0 },
+								  { (1), (2), (1) }};
 
 	Olho * novaImagem;
 	novaImagem = malloc(sizeof(Olho));
 	novaImagem = criarImagem(imagemOlho);
 
 	int novoPixel;
-	Pixel ** pixelsVerticais;
-	Pixel ** pixelsHorizontais;
+	Pixel * pixel;
 
-	pixelsVerticais = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
-	pixelsHorizontais = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
-	for(int i = 0; i< imagemOlho->largura; i++){
-		pixelsVerticais[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
-		pixelsHorizontais[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
-	}
+	int somaV, somaH;
+	for (int linha = 0; linha < imagemOlho->altura; ++linha){
+    	for (int coluna = 0; coluna < imagemOlho->largura; ++coluna){
+    		somaV = 0;
+    		somaH = 0;
+    		for (int i = 0; i < 3; ++i){
+    			for (int j = 0; j < 3; ++j){
+    			 	pixel = leituraPixel(imagemOlho, coluna + (j-1), linha + (i-1));
+    				somaV += ( pixel->r *  mascaraVertical[i][j] );
+    				somaH += ( pixel->r *  mascaraHorizontal[i][j] );
+    			}
+    		}
+    		novoPixel = sqrt(((somaV*somaV)+(somaH*somaH)));
 
-	for (int i = 1; i < imagemOlho->altura-1; ++i){
-		for (int j = 1; j < imagemOlho->largura-1; ++j){
-			pixelsVerticais[i][j].r = (1)*imagemOlho->imagem[i-1][j-1].r + (2)*imagemOlho->imagem[i-1][j].r + (1)*imagemOlho->imagem[i-1][j+1].r +
-									(0)*imagemOlho->imagem[i][j-1].r + (0)*imagemOlho->imagem[i][j].r + (0)*imagemOlho->imagem[i][j+1].r +
-									(-1)*imagemOlho->imagem[i+1][j-1].r + (-2)*imagemOlho->imagem[i+1][j].r + (-1)*imagemOlho->imagem[i+1][j+1].r;
-
-			pixelsHorizontais[i][j].r = (-1)*imagemOlho->imagem[i-1][j-1].r + 0*imagemOlho->imagem[i-1][j].r + (1)*imagemOlho->imagem[i-1][j+1].r +
-									(-2)*imagemOlho->imagem[i][j-1].r + 0*imagemOlho->imagem[i][j].r + (2)*imagemOlho->imagem[i][j+1].r +
-									(-1)*imagemOlho->imagem[i+1][j-1].r + (0)*imagemOlho->imagem[i+1][j].r + (1)*imagemOlho->imagem[i+1][j+1].r;
-			
-		}
-	}
-
-	for (int i = 0; i < imagemOlho->altura; ++i){
-		for (int j = 0; j < imagemOlho->largura; ++j){
-		novoPixel = pixelsVerticais[i][j].r;
-		novaImagem->imagem[i][j].r = novoPixel;
-		novaImagem->imagem[i][j].g = novoPixel;
-		novaImagem->imagem[i][j].b = novoPixel;
-		}
-	}
+    		novaImagem->imagem[linha][coluna].r = novoPixel;
+    		novaImagem->imagem[linha][coluna].g = novoPixel;
+    		novaImagem->imagem[linha][coluna].b = novoPixel;
+    	}
+    }
 
 	return novaImagem;
+
+}
+
+Olho * binarizacaoImagem(Olho * imagemOlho){
+
 
 }
 
