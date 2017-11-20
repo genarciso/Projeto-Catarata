@@ -7,10 +7,10 @@
 int main(){
 	char * caminhoImagem = "../imagens/Normal.ppm";
 	Olho * imagem = leituraImagem(caminhoImagem);	
-	Olho * escaladoCinza = escalaCinza(imagem);
-	salvarImagem(escaladoCinza,"escalaCinza.ppm");
+	Olho * escalaDeCinza = escalaCinza(imagem);
+	salvarImagem(escalaDeCinza,"escalaCinza.ppm");
 	free(imagem);
-	free(escaladoCinza);
+	free(escalaDeCinza);
 	return 0;
 }
 
