@@ -207,9 +207,31 @@ Olho * filtroSobel(Olho * imagemOlho){
 }
 
 Olho * binarizacaoImagem(Olho * imagemOlho){
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem = criarImagem(imagemOlho);
+	novaImagem->numeroMaximo = 1;
 
+
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			if(imagemOlho->imagem[i][j].r > 21){
+				novaImagem->imagem[i][j].r = 1;
+				novaImagem->imagem[i][j].g = 1;
+				novaImagem->imagem[i][j].b = 1;
+			}
+			else{
+				novaImagem->imagem[i][j].r = 0;
+				novaImagem->imagem[i][j].g = 0;
+				novaImagem->imagem[i][j].b = 0;
+			}
+		}
+	}
+
+	return novaImagem;
 
 }
+
 
 // Esse método recebe um dado do tipo olho e um char que represente um nome e salva essa imagem de olho em um arquivo ppm nomeado pelo nome dado.
 void salvarImagem(Olho * imagemOlho, char * nome){
