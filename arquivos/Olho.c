@@ -75,13 +75,14 @@ Olho * leituraImagem(char * file){
 Olho * criarImagem(Olho * imagemOlho){
 	Olho * novaImagem;
     novaImagem = malloc(sizeof(Olho));
-
+	
     novaImagem->largura = imagemOlho->largura;
 	novaImagem->altura = imagemOlho->altura;
 	novaImagem->numeroMaximo = imagemOlho->numeroMaximo;
 	strcpy(novaImagem->tipo, imagemOlho->tipo);
 	
 	novaImagem->imagem = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
+	
 	for(int i = 0; i< imagemOlho->largura; i++){
 		novaImagem->imagem[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
 	}
@@ -94,11 +95,13 @@ Olho * escalaCinza(Olho * imagemOlho){
 	int vermelho = 0;
 	int azul = 0;
 	int verde = 0;
-
+	
+	printf("\n");
 	Olho * novaImagem;
 	novaImagem = malloc(sizeof(Olho));
 	novaImagem = criarImagem(imagemOlho);
-
+	
+	
 	for(int i = 0; i < imagemOlho->altura; i++){
 		for(int j = 0; j < imagemOlho->largura; j++){
 			novaImagem->imagem[i][j].r = (imagemOlho->imagem[i][j].r)*0.3 + (imagemOlho->imagem[i][j].g)*0.59 + (imagemOlho->imagem[i][j].b)*0.11;	

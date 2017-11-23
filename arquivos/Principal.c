@@ -5,12 +5,13 @@
 
 
 int main(){
-	char * caminhoImagem = "../imagens/Normal.ppm";
-
+	char * caminhoImagem = "../imagens/Normal2.ppm";
+	
 	Olho * imagem = leituraImagem(caminhoImagem);
-
+	
+	
 	Olho * escaladoCinza = escalaCinza(imagem);
-
+	
 	Olho * filtroGauss = filtroGaussiano(escaladoCinza);
 
 	Olho * filtroSobelImagem = filtroSobel(filtroGauss);
