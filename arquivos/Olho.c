@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "../bibliotecas/Structs.h"
 
 void leituraComentarios(FILE * imagem){
@@ -74,13 +75,14 @@ Olho * leituraImagem(char * file){
 Olho * criarImagem(Olho * imagemOlho){
 	Olho * novaImagem;
     novaImagem = malloc(sizeof(Olho));
-
+	
     novaImagem->largura = imagemOlho->largura;
 	novaImagem->altura = imagemOlho->altura;
 	novaImagem->numeroMaximo = imagemOlho->numeroMaximo;
 	strcpy(novaImagem->tipo, imagemOlho->tipo);
 	
 	novaImagem->imagem = (Pixel**) malloc(sizeof(Pixel*) * imagemOlho->altura);
+	
 	for(int i = 0; i< imagemOlho->largura; i++){
 		novaImagem->imagem[i] = (Pixel*) malloc(sizeof(Pixel) * imagemOlho->largura);
 	}
@@ -93,11 +95,13 @@ Olho * escalaCinza(Olho * imagemOlho){
 	int vermelho = 0;
 	int azul = 0;
 	int verde = 0;
-
+	
+	printf("\n");
 	Olho * novaImagem;
 	novaImagem = malloc(sizeof(Olho));
 	novaImagem = criarImagem(imagemOlho);
-
+	
+	
 	for(int i = 0; i < imagemOlho->altura; i++){
 		for(int j = 0; j < imagemOlho->largura; j++){
 			novaImagem->imagem[i][j].r = (imagemOlho->imagem[i][j].r)*0.3 + (imagemOlho->imagem[i][j].g)*0.59 + (imagemOlho->imagem[i][j].b)*0.11;	
@@ -164,6 +168,73 @@ Olho * filtroGaussiano(Olho * imagemOlho){
     }
     return novaImagem;
 }
+
+Olho * filtroSobel(Olho * imagemOlho){
+	 int mascaraHorizontal[3][3] = {{ (-1), 0, (1) },
+									{ (-2), 0, (2) },
+									{ (-1), 0, (1) }};
+
+	 int mascaraVertical[3][3] = {{ (-1), (-2), (-1) },
+	 							  { 0, 0, 0 },
+								  { (1), (2), (1) }};
+
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem = criarImagem(imagemOlho);
+
+	int novoPixel;
+	Pixel * pixel;
+
+	int somaV, somaH;
+	for (int linha = 0; linha < imagemOlho->altura; ++linha){
+    	for (int coluna = 0; coluna < imagemOlho->largura; ++coluna){
+    		somaV = 0;
+    		somaH = 0;
+    		for (int i = 0; i < 3; ++i){
+    			for (int j = 0; j < 3; ++j){
+    			 	pixel = leituraPixel(imagemOlho, coluna + (j-1), linha + (i-1));
+    				somaV += ( pixel->r *  mascaraVertical[i][j] );
+    				somaH += ( pixel->r *  mascaraHorizontal[i][j] );
+    			}
+    		}
+    		novoPixel = sqrt(((somaV*somaV)+(somaH*somaH)));
+
+    		novaImagem->imagem[linha][coluna].r = novoPixel;
+    		novaImagem->imagem[linha][coluna].g = novoPixel;
+    		novaImagem->imagem[linha][coluna].b = novoPixel;
+    	}
+    }
+
+	return novaImagem;
+
+}
+
+Olho * binarizacaoImagem(Olho * imagemOlho){
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem = criarImagem(imagemOlho);
+	novaImagem->numeroMaximo = 1;
+
+
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			if(imagemOlho->imagem[i][j].r > 21){
+				novaImagem->imagem[i][j].r = 1;
+				novaImagem->imagem[i][j].g = 1;
+				novaImagem->imagem[i][j].b = 1;
+			}
+			else{
+				novaImagem->imagem[i][j].r = 0;
+				novaImagem->imagem[i][j].g = 0;
+				novaImagem->imagem[i][j].b = 0;
+			}
+		}
+	}
+
+	return novaImagem;
+
+}
+
 
 // Esse método recebe um dado do tipo olho e um char que represente um nome e salva essa imagem de olho em um arquivo ppm nomeado pelo nome dado.
 void salvarImagem(Olho * imagemOlho, char * nome){
