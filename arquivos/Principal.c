@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "../bibliotecas/Olho.h"
+#include "../bibliotecas/Filtro.h"
 
 
 int main(){
-	char * caminhoImagem = "../imagens/Normal2.ppm";
+	char * caminhoImagem = "../imagens/Catarata2.ppm";
 	
 	Olho * imagem = leituraImagem(caminhoImagem);
 	

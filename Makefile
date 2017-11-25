@@ -1,9 +1,13 @@
-principal: arquivos/Olho.o 
-	gcc arquivos/Principal.c arquivos/Olho.o -lm  -o arquivos/catarata -ggdb
+principal: arquivos/Generico.o arquivos/Filtros.o
+	gcc arquivos/Principal.c  arquivos/Generico.o arquivos/Filtros.o -lm  -o arquivos/catarata -ggdb
 	
-Olho.o: arquivos/Olho.c
-	gcc arquivos/Olho.c -c -lm -o arquivos/Olho.o -ggdb
-	
+Filtro.o:
+	gcc arquivos/Filtros.c -c -o arquivos/Filtros.o -ggdb
+
+Generico.o:
+	gcc arquivos/Generico.c -c -o arquivos/Generico.o -ggdb
+
+
 clean:
 	rm arquivos/*.o
 	rm arquivos/catarata
