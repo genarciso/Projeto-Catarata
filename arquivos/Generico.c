@@ -87,3 +87,97 @@ void salvarImagem(Olho * imagemOlho, char * nome){
 	}
 	fclose(imagem);
 }
+
+int * transformadaHough(Olho * imagemOlho, int identificadorImagem){
+	int raioMin;
+	int raioMax;
+	if(identificadorImagem == 1){
+		raioMin = 82;
+		raioMax = 83;	
+	}
+	else if (identificadorImagem == 2){
+		raioMin = 146;
+		raioMax = 148;
+	}
+	else if(identificadorImagem == 3){
+		raioMin = 156;
+		raioMax = 157;
+	}
+	else if(identificadorImagem == 4){
+		raioMin = 68;
+		raioMax = 70;
+	}
+	
+
+	int *** matrizHough = (int ***) malloc(imagemOlho->altura * sizeof(int**));
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		matrizHough[i] = (int **) malloc(imagemOlho->largura * sizeof(int*));
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			matrizHough[i][j] = (int *) malloc((raioMax-raioMin+1) * sizeof(int));
+		}	
+	}
+
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			for (int r = 0; r <= raioMax-raioMin; ++r){
+				matrizHough[i][j][r] = 0;
+			}
+		}
+	} 
+	float tabelaSin[361];
+	float tabelaCos[361];
+	for (int i = 0; i <= 360; ++i)
+	{
+		tabelaCos[i] = cos(i*M_PI/180);
+		tabelaSin[i] = sin(i*M_PI/180);
+	}
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			if (imagemOlho->imagem[i][j].r == 1){
+				for (int r = raioMin; r <= raioMax; ++r){
+					for (int t = 0; t <= 360; ++t){
+						int aAux = (int) i - r*tabelaCos[t];
+						int bAux = (int) j - r*tabelaSin[t];
+
+						if( (aAux > 0) && (aAux < imagemOlho->altura) && (bAux > 0) && (bAux < imagemOlho->largura)){
+							matrizHough[aAux][bAux][r-raioMin] += 1;
+
+						}
+					}
+				}
+			}	
+		}
+	}
+
+	int vencedor = 0;
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			for (int r = 0; r <= raioMax-raioMin; ++r){
+				if (vencedor < matrizHough[i][j][r]){
+					vencedor = matrizHough[i][j][r];
+				}	
+			}
+		}
+	}
+
+	int * vetorCoordenadas;
+	vetorCoordenadas = malloc(sizeof(int) * 4);
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			for (int r = 0; r <= raioMax-raioMin; ++r){
+				if(matrizHough[i][j][r] == vencedor){
+					printf("%d\t%d\t%d\n",i,j,r );
+					vetorCoordenadas[0] = i;
+					vetorCoordenadas[1] = j;
+					vetorCoordenadas[2] = r;
+					vetorCoordenadas[3] = raioMin;
+				}
+			}
+		}
+	}
+	printf("%d\n",vencedor );
+
+	free(matrizHough);
+	return vetorCoordenadas;
+
+}

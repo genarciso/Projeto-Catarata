@@ -169,7 +169,7 @@ Olho * binarizacaoImagem(Olho * imagemOlho){
 	novaImagem = criarImagem(imagemOlho);
 	novaImagem->numeroMaximo = 1;
 
-	int limiar = 21;
+	int limiar = 18;
 	for (int i = 0; i < imagemOlho->altura; ++i){
 		for (int j = 0; j < imagemOlho->largura; ++j){
 			if(imagemOlho->imagem[i][j].r > limiar){
@@ -189,30 +189,43 @@ Olho * binarizacaoImagem(Olho * imagemOlho){
 
 }
 
-Olho * transformadaHough(Olho * imagemOlho){
-	int r;
-	int raioMin = 85;
-	int raioMax = 90;
-	int *** matrizHough = (int ***) malloc(sizeof(int**) * imagemOlho->altura);
-	for (int i = 0; i < imagemOlho->altura; ++i){
-		int ** matrizHough[i] = (int **) malloc(sizeof(int*)*imagemOlho->largura);
-		for (int j = 0; j < imagemOlho->largura; ++j){
-			int * matrizHough[i][j][r] = (int *) malloc(sizeof(int)*(raioMin-raioMax+1));
-		}
-	 	
-	} 
+Olho * circuloPupila(Olho * imagemOlho, Olho * binarizada, int identificadoImagem){
+	int * vetorCoordenada = transformadaHough(binarizada, identificadoImagem);
+	int x = vetorCoordenada[0];
+	int y = vetorCoordenada[1];
+	int raio = vetorCoordenada[2] + vetorCoordenada[3];
+	
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem = criarImagem(imagemOlho);
 
-	for (int i = 0; i < count; ++i){
-		for (int i = 0; i < count; ++i){
-			for (int i = 0; i < count; ++i){
-				for (int i = 0; i < count; ++i){
-					/* code */
-				}
-				/* code */
-			}
-			/* code */
+	for (int i = 0; i < imagemOlho->altura; ++i){
+		for (int j = 0; j < imagemOlho->largura; ++j){
+			novaImagem->imagem[i][j].r = imagemOlho->imagem[i][j].r;
+			novaImagem->imagem[i][j].g = imagemOlho->imagem[i][j].g;
+			novaImagem->imagem[i][j].b = imagemOlho->imagem[i][j].b;
 		}
-		/* code */
 	}
 
+	
+	float tabelaSin[361];
+	float tabelaCos[361];
+	for (int i = 0; i <= 360; ++i)
+	{
+		tabelaCos[i] = cos(i*M_PI/180);
+		tabelaSin[i] = sin(i*M_PI/180);
+	}
+		
+	for (int i=0; i <= 360; i++){
+        int posicaoX = (int) x - raio*tabelaCos[i];
+		int posicaoY = (int) y - raio*tabelaSin[i];
+		if(posicaoX >= 0 && posicaoY >= 0){
+			novaImagem->imagem[posicaoX][posicaoY].r=255;
+        	novaImagem->imagem[posicaoX][posicaoY].g=0;
+        	novaImagem->imagem[posicaoX][posicaoY].b=0;	
+		}
+    }
+    //printf("%d\t%d\t%d\t%d\n",vetorCoordenada[0],vetorCoordenada[1],vetorCoordenada[2],vetorCoordenada[3] );
+    return novaImagem;
 }
+

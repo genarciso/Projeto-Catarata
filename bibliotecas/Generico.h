@@ -7,5 +7,6 @@ void leituraComentarios(FILE * imagem);
 Olho * criarImagem(Olho * imagemOlho);
 Pixel * leituraPixel( Olho * imagem, int coluna, int linha );
 void salvarImagem(Olho * imagemOlho, char * nome);
+int * transformadaHough(Olho * imagemOlho, int identificadorImagem);
 
 #endif
