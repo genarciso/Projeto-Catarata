@@ -8,6 +8,7 @@ Olho * escalaCinza(Olho * imagemOlho);
 Olho * filtroGaussiano(Olho * imagemOlho);
 Olho * filtroSobel(Olho * imagemOlho);
 Olho * binarizacaoImagem(Olho * imagemOlho);
-Olho * circuloPupila(Olho * imagemOlho, Olho * binarizada, int identificadoImagem);
+Olho * circuloPupila(Olho * imagemOlho, int * vetorCoordenada);
+Olho * imagemSegmentada(Olho * imagemOlho, int * vetorCoordenada);
 
 #endif

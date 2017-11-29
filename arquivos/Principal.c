@@ -5,7 +5,7 @@
 
 
 int main(){
-	char * caminhoImagem = "../imagens/Catarata.ppm";
+	char * caminhoImagem = "../imagens/Normal.ppm";
 	
 	Olho * imagem = leituraImagem(caminhoImagem);
 	
@@ -18,9 +18,11 @@ int main(){
 
 	Olho * binarizacao = binarizacaoImagem(filtroSobelImagem);
 
-	Olho * circuloPupilaCinza = circuloPupila(escaladoCinza,binarizacao, 1);
+	int * transformadaHoughVetor = transformadaHough(binarizacao,3);
 
-	Olho * circuloPupilaRGB = circuloPupila(imagem,binarizacao,1);
+	Olho * circuloPupilaCinza = circuloPupila(escaladoCinza,transformadaHoughVetor);
+
+	Olho * circuloPupilaRGB = circuloPupila(imagem,transformadaHoughVetor);
 
 	salvarImagem(escaladoCinza,"escalaCinza.ppm");
 	salvarImagem(filtroGauss,"filtroGauss.ppm");

@@ -189,8 +189,7 @@ Olho * binarizacaoImagem(Olho * imagemOlho){
 
 }
 
-Olho * circuloPupila(Olho * imagemOlho, Olho * binarizada, int identificadoImagem){
-	int * vetorCoordenada = transformadaHough(binarizada, identificadoImagem);
+Olho * circuloPupila(Olho * imagemOlho, int * vetorCoordenada){
 	int x = vetorCoordenada[0];
 	int y = vetorCoordenada[1];
 	int raio = vetorCoordenada[2] + vetorCoordenada[3];
@@ -227,5 +226,23 @@ Olho * circuloPupila(Olho * imagemOlho, Olho * binarizada, int identificadoImage
     }
     //printf("%d\t%d\t%d\t%d\n",vetorCoordenada[0],vetorCoordenada[1],vetorCoordenada[2],vetorCoordenada[3] );
     return novaImagem;
+}
+
+Olho * imagemSegmentada(Olho * imagemOlho, int * vetorCoordenada){	
+	int raio = vetorCoordenada[2] + vetorCoordenada[3];
+	int diametro = raio * raio;
+
+	Olho * novaImagem;
+	novaImagem = malloc(sizeof(Olho));
+	novaImagem->altura = diametro + 100;
+	novaImagem->largura = diametro + 100;
+	novaImagem->numeroMaximo = 255;
+	strcpy(novaImagem->tipo,"P3");
+
+	
+
+
+
+
 }
 
